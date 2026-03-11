@@ -234,3 +234,65 @@ color:white;
 background:#3d6df2;
 color:white;
 }
+
+/* DARK MODE */
+
+.dark{
+background:#121212;
+}
+
+.dark .dashboard{
+background:#1f1f2e;
+color:white;
+}
+
+.dark table{
+color:white;
+}
+
+.dark thead{
+background:#2d2d40;
+}
+
+.dark tbody tr:hover{
+background:#33334a;
+}
+
+.dark input,
+.dark select,
+.dark textarea{
+background:#2d2d40;
+color:white;
+border:1px solid #555;
+}
+
+.dark .progressBar{
+background:#444;
+}
+
+.dark #progress{
+background:linear-gradient(90deg,#5a7cff,#8ab4ff);
+}
+
+.dark .modal-box{
+background:#2d2d40;
+color:white;
+}
+
+/* Fix table header visibility in dark mode */
+
+.dark thead th{
+color: white;
+}
+
+.dark thead{
+background:#2a2a3f;
+}
+
+.dark td{
+color:white;
+}
+
+.dark tbody tr{
+border-bottom:1px solid #444;
+}

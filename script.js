@@ -5,7 +5,14 @@ const searchInput = document.getElementById("searchInput");
 const filterStatus = document.getElementById("filterStatus");
 
 function openModal(){
+
 document.getElementById("taskModal").style.display="block";
+
+/* clear previous values */
+
+document.getElementById("taskInput").value="";
+document.getElementById("responsibleInput").value="";
+document.getElementById("etaInput").value="";
 }
 
 function closeModal(){
@@ -91,7 +98,17 @@ document.getElementById("progress").style.width = percent+"%";
 }
 
 function toggleDarkMode(){
+
 document.body.classList.toggle("dark");
+
+/* Save mode in browser */
+
+if(document.body.classList.contains("dark")){
+localStorage.setItem("theme","dark");
+}else{
+localStorage.setItem("theme","light");
+}
+
 }
 
 function exportCSV(){
@@ -115,3 +132,9 @@ searchInput.addEventListener("input",renderTasks);
 filterStatus.addEventListener("change",renderTasks);
 
 renderTasks();
+/********** Load theme on page load **********/
+/* load saved theme */
+
+if(localStorage.getItem("theme") === "dark"){
+document.body.classList.add("dark");
+}
