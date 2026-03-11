@@ -1,72 +1,98 @@
-let taskInput = document.getElementById("taskInput");
-let taskList = document.getElementById("taskList");
-let taskCount = document.getElementById("taskCount");
-
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-function renderTasks(){
-taskList.innerHTML="";
+const modal = document.getElementById("taskModal");
+const table = document.getElementById("taskTable");
 
-tasks.forEach((task,index)=>{
-
-let li=document.createElement("li");
-
-let span=document.createElement("span");
-span.textContent=task.text;
-
-if(task.completed){
-span.classList.add("completed");
+function openModal(){
+modal.style.display="block";
 }
 
-span.onclick=function(){
-task.completed=!task.completed;
-saveTasks();
-};
+function closeModal(){
+modal.style.display="none";
+clearInputs();
+}
 
-let delBtn=document.createElement("button");
-delBtn.textContent="Delete";
-delBtn.className="delete-btn";
-
-delBtn.onclick=function(){
-tasks.splice(index,1);
-saveTasks();
-};
-
-li.appendChild(span);
-li.appendChild(delBtn);
-
-taskList.appendChild(li);
-
-});
-
-taskCount.textContent=tasks.length;
+function clearInputs(){
+document.getElementById("taskInput").value="";
+document.getElementById("responsibleInput").value="";
+document.getElementById("etaInput").value="";
 }
 
 function addTask(){
 
-let text=taskInput.value.trim();
+let task = document.getElementById("taskInput").value;
+let responsible = document.getElementById("responsibleInput").value;
+let eta = document.getElementById("etaInput").value;
 
-if(text===""){
-alert("Please enter a task");
-return;
-}
+if(task==="") return alert("Enter Task");
 
 tasks.push({
-text:text,
+task,
+responsible,
+eta,
 completed:false
 });
 
-taskInput.value="";
-
 saveTasks();
+
+closeModal();
+}
+
+function renderTasks(){
+
+table.innerHTML="";
+
+tasks.forEach((t,index)=>{
+
+let row=`
+<tr>
+<td>${index+1}</td>
+<td ${t.completed?"style='text-decoration:line-through'":""}>${t.task}</td>
+<td>${t.responsible}</td>
+<td>${t.eta}</td>
+<td>
+
+<span class="action-btn complete" onclick="completeTask(${index})">✔</span>
+
+<span class="action-btn edit" onclick="editTask(${index})">✏</span>
+
+<span class="action-btn delete" onclick="deleteTask(${index})">🗑</span>
+
+</td>
+</tr>
+`;
+
+table.innerHTML+=row;
+
+});
 
 }
 
-function saveTasks(){
+function completeTask(i){
+tasks[i].completed=!tasks[i].completed;
+saveTasks();
+}
 
+function deleteTask(i){
+tasks.splice(i,1);
+saveTasks();
+}
+
+function editTask(i){
+
+document.getElementById("taskInput").value=tasks[i].task;
+document.getElementById("responsibleInput").value=tasks[i].responsible;
+document.getElementById("etaInput").value=tasks[i].eta;
+
+tasks.splice(i,1);
+
+openModal();
+saveTasks();
+}
+
+function saveTasks(){
 localStorage.setItem("tasks",JSON.stringify(tasks));
 renderTasks();
-
 }
 
 renderTasks();

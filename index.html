@@ -3,35 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1Stop To-Do List</title>
-<link rel="stylesheet" href="style.css">
-</head>
+<title>1Stop Task Manager</title>
 
+<link rel="stylesheet" href="style.css">
+
+</head>
 <body>
 
 <div class="container">
 
-    <!-- Logo -->
-    <div class="logo-section">
-        <img src="/images/logo.png" alt="1Stop Logo">
-        <h1>To-Do List</h1>
-    </div>
+<header>
+<img src="/images/logo.png" class="logo">
+<h2>Task Manager</h2>
+</header>
 
-    <!-- Input Section -->
-    <div class="input-section">
-        <input type="text" id="taskInput" placeholder="Enter your task...">
-        <button onclick="addTask()">Add Task</button>
-    </div>
+<button class="add-btn" onclick="openModal()">Add Task</button>
 
-    <!-- Task Counter -->
-    <p class="task-count">
-        Total Tasks: <span id="taskCount">0</span>
-    </p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Task/Description</th>
+<th>Responsible</th>
+<th>ETA</th>
+<th>Action</th>
+</tr>
+</thead>
 
-    <!-- Task List -->
-    <ul id="taskList"></ul>
+<tbody id="taskTable"></tbody>
+
+</table>
 
 </div>
+
+
+<!-- Modal -->
+<div class="modal" id="taskModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+<h3>Add Task</h3>
+<span class="close" onclick="closeModal()">×</span>
+</div>
+
+<label>Task / Description</label>
+<textarea id="taskInput"></textarea>
+
+<label>Responsible</label>
+<input type="text" id="responsibleInput">
+
+<label>ETA</label>
+<input type="datetime-local" id="etaInput">
+
+<div class="modal-buttons">
+<button class="cancel" onclick="closeModal()">Cancel</button>
+<button class="add" onclick="addTask()">Add Task</button>
+</div>
+
+</div>
+</div>
+
 
 <script src="script.js"></script>
 
