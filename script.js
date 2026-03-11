@@ -1,104 +1,72 @@
-// Simple todo list using localStorage and Bootstrap components
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let taskInput = document.getElementById("taskInput");
+let taskList = document.getElementById("taskList");
+let taskCount = document.getElementById("taskCount");
 
-function renderTasks() {
-  const tbody = $('#taskTable tbody');
-  tbody.empty();
-  tasks.forEach((task, i) => {
-    const tr = $('<tr>').toggleClass('table-success', task.completed);
-    tr.append($('<th>').attr('scope', 'row').text(i + 1));
-    tr.append($('<td>').text(task.description));
-    tr.append($('<td>').text(task.responsible));
-    tr.append($('<td>').text(task.eta));
-    const actions = $('<td>').addClass('text-center');
-    const completeIcon = $('<i>')
-      .addClass('bi')
-      .addClass(task.completed ? 'bi-check-circle-fill text-success' : 'bi-check-circle')
-      .css('cursor', 'pointer')
-      .click(() => toggleComplete(i));
-    const editIcon = $('<i>')
-      .addClass('bi bi-pencil-square ms-2')
-      .css('cursor', 'pointer')
-      .click(() => openEditModal(i));
-    const deleteIcon = $('<i>')
-      .addClass('bi bi-trash ms-2 text-danger')
-      .css('cursor', 'pointer')
-      .click(() => deleteTask(i));
-    actions.append(completeIcon, editIcon, deleteIcon);
-    tr.append(actions);
-    tbody.append(tr);
-  });
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function renderTasks(){
+taskList.innerHTML="";
+
+tasks.forEach((task,index)=>{
+
+let li=document.createElement("li");
+
+let span=document.createElement("span");
+span.textContent=task.text;
+
+if(task.completed){
+span.classList.add("completed");
 }
 
-function saveTasks() {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+span.onclick=function(){
+task.completed=!task.completed;
+saveTasks();
+};
 
-function addTask(task) {
-  tasks.push(task);
-  saveTasks();
-  renderTasks();
-}
+let delBtn=document.createElement("button");
+delBtn.textContent="Delete";
+delBtn.className="delete-btn";
 
-function updateTask(index, updated) {
-  tasks[index] = updated;
-  saveTasks();
-  renderTasks();
-}
+delBtn.onclick=function(){
+tasks.splice(index,1);
+saveTasks();
+};
 
-function deleteTask(index) {
-  if (!confirm('Remove this task?')) return;
-  tasks.splice(index, 1);
-  saveTasks();
-  renderTasks();
-}
+li.appendChild(span);
+li.appendChild(delBtn);
 
-function toggleComplete(index) {
-  tasks[index].completed = !tasks[index].completed;
-  saveTasks();
-  renderTasks();
-}
+taskList.appendChild(li);
 
-function openEditModal(index) {
-  const task = tasks[index];
-  $('#taskModalLabel').text('Edit Task');
-  $('#description').val(task.description);
-  $('#responsible').val(task.responsible);
-  $('#eta').val(task.eta);
-  $('#saveTaskBtn').data('index', index);
-  const modal = new bootstrap.Modal(document.getElementById('taskModal'));
-  modal.show();
-}
-
-$(document).ready(() => {
-  renderTasks();
-
-  $('#addTaskBtn').click(() => {
-    $('#taskModalLabel').text('Add Task');
-    $('#description').val('');
-    $('#responsible').val('');
-    $('#eta').val('');
-    $('#saveTaskBtn').removeData('index');
-    const modal = new bootstrap.Modal(document.getElementById('taskModal'));
-    modal.show();
-  });
-
-  $('#saveTaskBtn').click(() => {
-    const description = $('#description').val().trim();
-    const responsible = $('#responsible').val().trim();
-    const eta = $('#eta').val();
-    if (!description) {
-      alert('Description required');
-      return;
-    }
-    const index = $('#saveTaskBtn').data('index');
-    const task = { description, responsible, eta, completed: false };
-    if (index !== undefined) {
-      task.completed = tasks[index].completed;
-      updateTask(index, task);
-    } else {
-      addTask(task);
-    }
-    bootstrap.Modal.getInstance(document.getElementById('taskModal')).hide();
-  });
 });
+
+taskCount.textContent=tasks.length;
+}
+
+function addTask(){
+
+let text=taskInput.value.trim();
+
+if(text===""){
+alert("Please enter a task");
+return;
+}
+
+tasks.push({
+text:text,
+completed:false
+});
+
+taskInput.value="";
+
+saveTasks();
+
+}
+
+function saveTasks(){
+
+localStorage.setItem("tasks",JSON.stringify(tasks));
+renderTasks();
+
+}
+
+renderTasks();
