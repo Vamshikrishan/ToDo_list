@@ -9,67 +9,82 @@ modal.style.display="block";
 
 function closeModal(){
 modal.style.display="none";
-clearInputs();
+clearFields();
 }
 
-function clearInputs(){
-document.getElementById("taskInput").value="";
-document.getElementById("responsibleInput").value="";
-document.getElementById("etaInput").value="";
+function clearFields(){
+taskInput.value="";
+responsibleInput.value="";
+etaInput.value="";
 }
 
 function addTask(){
 
-let task = document.getElementById("taskInput").value;
-let responsible = document.getElementById("responsibleInput").value;
-let eta = document.getElementById("etaInput").value;
+let task = taskInput.value.trim();
+let responsible = responsibleInput.value.trim();
+let eta = etaInput.value;
 
-if(task==="") return alert("Enter Task");
+if(task===""){
+alert("Enter task");
+return;
+}
 
 tasks.push({
 task,
 responsible,
 eta,
-completed:false
+status:"Pending"
 });
 
 saveTasks();
-
 closeModal();
+
 }
 
 function renderTasks(){
 
 table.innerHTML="";
 
-tasks.forEach((t,index)=>{
+tasks.forEach((t,i)=>{
 
-let row=`
+let statusClass = t.status=="Completed" ? "completed" : "pending";
+
+table.innerHTML += `
 <tr>
-<td>${index+1}</td>
-<td ${t.completed?"style='text-decoration:line-through'":""}>${t.task}</td>
+
+<td>${i+1}</td>
+
+<td>${t.task}</td>
+
 <td>${t.responsible}</td>
+
 <td>${t.eta}</td>
+
+<td>
+<span class="status ${statusClass}">
+${t.status}
+</span>
+</td>
+
 <td>
 
-<span class="action-btn complete" onclick="completeTask(${index})">✔</span>
+<span class="action complete" onclick="completeTask(${i})">✔</span>
 
-<span class="action-btn edit" onclick="editTask(${index})">✏</span>
+<span class="action edit" onclick="editTask(${i})">✎</span>
 
-<span class="action-btn delete" onclick="deleteTask(${index})">🗑</span>
+<span class="action delete" onclick="deleteTask(${i})">🗑</span>
 
 </td>
+
 </tr>
 `;
-
-table.innerHTML+=row;
 
 });
 
 }
 
 function completeTask(i){
-tasks[i].completed=!tasks[i].completed;
+tasks[i].status="Completed";
 saveTasks();
 }
 
@@ -80,9 +95,9 @@ saveTasks();
 
 function editTask(i){
 
-document.getElementById("taskInput").value=tasks[i].task;
-document.getElementById("responsibleInput").value=tasks[i].responsible;
-document.getElementById("etaInput").value=tasks[i].eta;
+taskInput.value=tasks[i].task;
+responsibleInput.value=tasks[i].responsible;
+etaInput.value=tasks[i].eta;
 
 tasks.splice(i,1);
 

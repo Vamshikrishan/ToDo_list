@@ -4,29 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1Stop Task Manager</title>
-
 <link rel="stylesheet" href="style.css">
-
 </head>
+
 <body>
 
-<div class="container">
+<div class="dashboard">
 
-<header>
-<img src="/images/logo.png" class="logo">
+<header class="topbar">
+
+<div class="brand">
+<img src="/images/logo.png" alt="1Stop Logo">
 <h2>Task Manager</h2>
+</div>
+
+<button class="addTaskBtn" onclick="openModal()">+ Add Task</button>
+
 </header>
 
-<button class="add-btn" onclick="openModal()">Add Task</button>
+
+<div class="table-container">
 
 <table>
+
 <thead>
 <tr>
 <th>#</th>
-<th>Task/Description</th>
+<th>Task</th>
 <th>Responsible</th>
 <th>ETA</th>
-<th>Action</th>
+<th>Status</th>
+<th>Actions</th>
 </tr>
 </thead>
 
@@ -36,36 +44,33 @@
 
 </div>
 
+</div>
+
 
 <!-- Modal -->
+
 <div class="modal" id="taskModal">
 
-<div class="modal-content">
+<div class="modal-box">
 
 <div class="modal-header">
-<h3>Add Task</h3>
-<span class="close" onclick="closeModal()">×</span>
-</div>
 
+<h3>Add Task</h3>
+
+    <span onclick="closeModal()">✕</span>
+</div>
 <label>Task / Description</label>
 <textarea id="taskInput"></textarea>
-
 <label>Responsible</label>
 <input type="text" id="responsibleInput">
-
 <label>ETA</label>
 <input type="datetime-local" id="etaInput">
-
-<div class="modal-buttons">
-<button class="cancel" onclick="closeModal()">Cancel</button>
-<button class="add" onclick="addTask()">Add Task</button>
-</div>
-
+<div class="modal-actions">
+    <button class="cancelBtn" onclick="closeModal()">Cancel</button>
+    <button class="saveBtn" onclick="addTask()">Add Task</button>
 </div>
 </div>
-
-
-<script src="script.js"></script>
-
+</div>
+    <script src="script.js"></script>
 </body>
 </html>
