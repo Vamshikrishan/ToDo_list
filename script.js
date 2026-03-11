@@ -1,33 +1,22 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-const modal = document.getElementById("taskModal");
 const table = document.getElementById("taskTable");
+const searchInput = document.getElementById("searchInput");
+const filterStatus = document.getElementById("filterStatus");
 
 function openModal(){
-modal.style.display="block";
+document.getElementById("taskModal").style.display="block";
 }
 
 function closeModal(){
-modal.style.display="none";
-clearFields();
-}
-
-function clearFields(){
-taskInput.value="";
-responsibleInput.value="";
-etaInput.value="";
+document.getElementById("taskModal").style.display="none";
 }
 
 function addTask(){
 
-let task = taskInput.value.trim();
-let responsible = responsibleInput.value.trim();
+let task = taskInput.value;
+let responsible = responsibleInput.value;
 let eta = etaInput.value;
-
-if(task===""){
-alert("Enter task");
-return;
-}
 
 tasks.push({
 task,
@@ -38,49 +27,44 @@ status:"Pending"
 
 saveTasks();
 closeModal();
-
 }
 
 function renderTasks(){
 
+let search = searchInput.value.toLowerCase();
+let filter = filterStatus.value;
+
 table.innerHTML="";
+
+let completed=0;
 
 tasks.forEach((t,i)=>{
 
-let statusClass = t.status=="Completed" ? "completed" : "pending";
+if(!t.task.toLowerCase().includes(search)) return;
+
+if(filter!="all" && t.status!=filter) return;
+
+if(t.status=="Completed") completed++;
+
+let statusClass = t.status=="Completed" ? "completed":"pending";
 
 table.innerHTML += `
 <tr>
-
 <td>${i+1}</td>
-
 <td>${t.task}</td>
-
 <td>${t.responsible}</td>
-
 <td>${t.eta}</td>
-
+<td><span class="status ${statusClass}">${t.status}</span></td>
 <td>
-<span class="status ${statusClass}">
-${t.status}
-</span>
+<span class="action" onclick="completeTask(${i})">✔</span>
+<span class="action" onclick="deleteTask(${i})">🗑</span>
 </td>
-
-<td>
-
-<span class="action complete" onclick="completeTask(${i})">✔</span>
-
-<span class="action edit" onclick="editTask(${i})">✎</span>
-
-<span class="action delete" onclick="deleteTask(${i})">🗑</span>
-
-</td>
-
 </tr>
 `;
 
 });
 
+updateProgress();
 }
 
 function completeTask(i){
@@ -93,21 +77,41 @@ tasks.splice(i,1);
 saveTasks();
 }
 
-function editTask(i){
-
-taskInput.value=tasks[i].task;
-responsibleInput.value=tasks[i].responsible;
-etaInput.value=tasks[i].eta;
-
-tasks.splice(i,1);
-
-openModal();
-saveTasks();
-}
-
 function saveTasks(){
 localStorage.setItem("tasks",JSON.stringify(tasks));
 renderTasks();
 }
+
+function updateProgress(){
+
+let completed = tasks.filter(t=>t.status=="Completed").length;
+let percent = tasks.length ? (completed/tasks.length)*100 : 0;
+
+document.getElementById("progress").style.width = percent+"%";
+}
+
+function toggleDarkMode(){
+document.body.classList.toggle("dark");
+}
+
+function exportCSV(){
+
+let csv="Task,Responsible,ETA,Status\n";
+
+tasks.forEach(t=>{
+csv+=`${t.task},${t.responsible},${t.eta},${t.status}\n`;
+});
+
+let blob=new Blob([csv]);
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+a.download="tasks.csv";
+a.click();
+
+}
+
+searchInput.addEventListener("input",renderTasks);
+filterStatus.addEventListener("change",renderTasks);
 
 renderTasks();

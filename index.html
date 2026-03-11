@@ -14,16 +14,40 @@
 <header class="topbar">
 
 <div class="brand">
-<img src="/images/logo.png" alt="1Stop Logo">
+<img src="/images/logo.png" alt="Logo">
 <h2>Task Manager</h2>
 </div>
 
-<button class="addTaskBtn" onclick="openModal()">+ Add Task</button>
+<div class="controls">
+
+<input type="text" id="searchInput" placeholder="Search task...">
+
+<select id="filterStatus">
+<option value="all">All</option>
+<option value="Pending">Pending</option>
+<option value="Completed">Completed</option>
+</select>
+
+<button onclick="exportCSV()">Export</button>
+
+<button onclick="toggleDarkMode()">🌙</button>
+
+<button onclick="openModal()">+ Add Task</button>
+
+</div>
 
 </header>
 
 
-<div class="table-container">
+<div class="progressBox">
+
+<p>Task Progress</p>
+<div class="progressBar">
+<div id="progress"></div>
+</div>
+
+</div>
+
 
 <table>
 
@@ -34,15 +58,13 @@
 <th>Responsible</th>
 <th>ETA</th>
 <th>Status</th>
-<th>Actions</th>
+<th style="text-align:center;">Actions</th>
 </tr>
 </thead>
 
 <tbody id="taskTable"></tbody>
 
 </table>
-
-</div>
 
 </div>
 
@@ -53,24 +75,31 @@
 
 <div class="modal-box">
 
-<div class="modal-header">
-
 <h3>Add Task</h3>
 
-    <span onclick="closeModal()">✕</span>
-</div>
-<label>Task / Description</label>
+<label>Task</label>
 <textarea id="taskInput"></textarea>
+
 <label>Responsible</label>
 <input type="text" id="responsibleInput">
+
 <label>ETA</label>
 <input type="datetime-local" id="etaInput">
-<div class="modal-actions">
-    <button class="cancelBtn" onclick="closeModal()">Cancel</button>
-    <button class="saveBtn" onclick="addTask()">Add Task</button>
+
+<div class="modalBtns">
+
+<button onclick="closeModal()">Cancel</button>
+
+<button onclick="addTask()">Add Task</button>
+
 </div>
+
 </div>
+
 </div>
-    <script src="script.js"></script>
+
+
+<script src="script.js"></script>
+
 </body>
 </html>

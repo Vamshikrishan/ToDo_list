@@ -2,21 +2,26 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI;
+font-family: 'Segoe UI', sans-serif;
 }
 
 body{
-background:#f4f6fb;
+background: linear-gradient(135deg,#4f6ef7,#6fa8ff);
+min-height:100vh;
 padding:40px;
+display:flex;
+justify-content:center;
+align-items:flex-start;
 }
 
+/* Dashboard */
+
 .dashboard{
-max-width:1100px;
-margin:auto;
+width:1100px;
 background:white;
-border-radius:10px;
-padding:25px;
-box-shadow:0 5px 25px rgba(0,0,0,0.1);
+border-radius:12px;
+padding:30px;
+box-shadow:0 15px 40px rgba(0,0,0,0.15);
 }
 
 /* Header */
@@ -26,6 +31,8 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:25px;
+flex-wrap:wrap;
+gap:15px;
 }
 
 .brand{
@@ -35,86 +42,140 @@ gap:10px;
 }
 
 .brand img{
-width:60px;
+width:55px;
 }
 
-.addTaskBtn{
-background:#2f6fed;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:6px;
-cursor:pointer;
+.brand h2{
 font-weight:600;
 }
 
-.addTaskBtn:hover{
-background:#1c54c9;
+.controls{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* Inputs */
+
+.controls input,
+.controls select{
+padding:10px 12px;
+border-radius:6px;
+border:1px solid #dcdcdc;
+outline:none;
+width:170px;
+}
+
+/* Buttons */
+
+.controls button{
+background:#3d6df2;
+border:none;
+color:white;
+padding:10px 14px;
+border-radius:6px;
+cursor:pointer;
+font-weight:500;
+transition:0.2s;
+}
+
+.controls button:hover{
+background:#274fd6;
+}
+
+/* Progress */
+
+.progressBox{
+margin-top:10px;
+margin-bottom:20px;
+}
+
+.progressBox p{
+margin-bottom:6px;
+font-weight:500;
+}
+
+.progressBar{
+width:100%;
+height:10px;
+background:#e5e8ff;
+border-radius:20px;
+overflow:hidden;
+}
+
+#progress{
+height:100%;
+background:linear-gradient(90deg,#3d6df2,#5aa2ff);
+width:0%;
 }
 
 /* Table */
 
-.table-container{
-overflow-x:auto;
-}
-
 table{
 width:100%;
 border-collapse:collapse;
-}
-
-th{
-background:#f1f3f8;
-padding:12px;
 text-align:left;
 }
 
-td{
-padding:12px;
-border-bottom:1px solid #eee;
+thead{
+background:#f3f6ff;
 }
 
-tr:hover{
-background:#fafafa;
+th{
+padding:14px;
+font-weight:600;
+color:#444;
+}
+
+td{
+padding:14px;
+border-bottom:1px solid #eee;
+vertical-align:middle;
+}
+
+tbody tr:hover{
+background:#fafbff;
+}
+
+/* Column alignment */
+
+th:nth-child(1),
+td:nth-child(1){
+text-align:center;
+width:50px;
+}
+
+th:nth-child(6),
+td:nth-child(6){
+text-align:center;
+width:130px;
 }
 
 /* Status */
 
 .status{
-padding:4px 10px;
+padding:6px 12px;
 border-radius:20px;
 font-size:12px;
 font-weight:600;
 }
 
 .pending{
-background:#ffe9a8;
-color:#8a6d00;
+background:#ffe7a6;
+color:#7a5a00;
 }
 
 .completed{
-background:#c8f7d2;
-color:#0b6b2e;
+background:#c9f3d5;
+color:#0f6d36;
 }
 
-/* Action buttons */
+/* Actions */
 
 .action{
 cursor:pointer;
-margin-right:12px;
 font-size:16px;
-}
-
-.complete{
-color:green;
-}
-
-.edit{
-color:#555;
-}
-
-.delete{
-color:red;
+margin:0 5px;
 }
 
 /* Modal */
@@ -126,7 +187,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.5);
+background:rgba(0,0,0,0.45);
 }
 
 .modal-box{
@@ -135,48 +196,41 @@ width:420px;
 margin:120px auto;
 padding:25px;
 border-radius:10px;
-animation:fadeIn 0.3s ease;
+box-shadow:0 10px 30px rgba(0,0,0,0.25);
 }
 
-@keyframes fadeIn{
-from{transform:scale(.9);opacity:0}
-to{transform:scale(1);opacity:1}
-}
-
-.modal-header{
-display:flex;
-justify-content:space-between;
+.modal-box h3{
 margin-bottom:15px;
 }
 
-textarea,input{
+textarea,
+.modal-box input{
 width:100%;
 padding:10px;
-margin-bottom:15px;
-border:1px solid #ccc;
+margin-bottom:12px;
 border-radius:6px;
+border:1px solid #ccc;
 }
 
-.modal-actions{
+.modalBtns{
 display:flex;
 justify-content:flex-end;
 gap:10px;
 }
 
-.cancelBtn{
-background:#777;
-color:white;
+.modalBtns button{
+padding:9px 14px;
 border:none;
-padding:8px 15px;
-border-radius:5px;
+border-radius:6px;
 cursor:pointer;
 }
 
-.saveBtn{
-background:#2f6fed;
+.modalBtns button:first-child{
+background:#888;
 color:white;
-border:none;
-padding:8px 15px;
-border-radius:5px;
-cursor:pointer;
+}
+
+.modalBtns button:last-child{
+background:#3d6df2;
+color:white;
 }
